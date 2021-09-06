@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BaseEntity,
+  Index,
 } from "typeorm";
 
 @Entity()
@@ -12,13 +13,15 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true, name: 'username' })
+  @Index("username", { unique: true })
+  @Column({ unique: true, name: "username" })
   username: string;
 
   @Column()
   password: string;
 
-  @Column({ unique: true, name: 'email' })
+  @Index("email", { unique: true })
+  @Column({ unique: true, name: "email" })
   email: string;
 
   @CreateDateColumn()

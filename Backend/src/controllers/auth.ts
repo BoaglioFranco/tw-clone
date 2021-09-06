@@ -49,7 +49,12 @@ export const registerUser: RequestHandler = async (req, res, next) => {
     }).save();
     res.status(201).send();
   } catch (e) {
-    console.log(e);
+    if(e.message.includes('email')){
+      console.log('EMAAAAAAAAAAAAIL MAAAAL');
+    } 
+    else if(e.message.includes('username')){
+      console.log('USEEEEEEEEEEER MAAAAL');
+    }
     res.status(500).send();
   }
 };
