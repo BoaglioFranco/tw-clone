@@ -19,6 +19,7 @@ const Register: NextPage = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<RegisterFormValues>();
 
   const usernameValidation: RegisterOptions = {
@@ -38,11 +39,7 @@ const Register: NextPage = () => {
     maxLength: { value: 20, message: "Maximum length is 20 characters." },
   };
 
-  if(mutation.isSuccess){
-    return <div className="">{mutation.data?.data}</div>
-  }
-
-  if(mutation.data?.data){
+  if (mutation.data?.data) {
     console.log(mutation.data.data);
   }
 
@@ -53,8 +50,13 @@ const Register: NextPage = () => {
       <form
         className={styles.content}
         onSubmit={handleSubmit((formValues) => {
-          mutation.mutate(formValues);
-
+          mutation.mutate(formValues, {
+            onError: (errors: any) => {
+              errors.response.data.errors.forEach((err: any) => {
+                setError(err.field, { type: "server", message: err.message });
+              });
+            },
+          });
         })}
       >
         <div className="field">

@@ -50,10 +50,14 @@ export const registerUser: RequestHandler = async (req, res, next) => {
     res.status(201).send();
   } catch (e) {
     if(e.message.includes('email')){
-      console.log('EMAAAAAAAAAAAAIL MAAAAL');
+      res.status(400).json({
+        errors: [{ field: "email", message: "That email is already in use." }],
+      });
     } 
     else if(e.message.includes('username')){
-      console.log('USEEEEEEEEEEER MAAAAL');
+      res.status(400).json({
+        errors: [{ field: "username", message: "Username is already taken." }],
+      });
     }
     res.status(500).send();
   }
