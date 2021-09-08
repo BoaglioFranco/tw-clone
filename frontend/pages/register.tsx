@@ -26,6 +26,10 @@ const Register: NextPage = () => {
     required: "Username is required.",
     minLength: { value: 2, message: "Username is too short." },
     maxLength: { value: 20, message: "Maximum length is 20 characters." },
+    pattern: {
+      value: /^[a-zA-Z0-9_]+$/,
+      message: "Username can only contain letters, characters and _",
+    },
   };
 
   const emailValidation: RegisterOptions = {

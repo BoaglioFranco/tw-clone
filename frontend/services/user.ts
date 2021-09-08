@@ -5,5 +5,12 @@ export const registerUser = (user: {
   password: string;
   email: string;
 }) => {
-    return axios.post('/register', user,);
+  return axios.post("/register", user);
+};
+
+export const login = (loginInfo: {
+  usernameOrEmail: string;
+  password: string;
+}) => {
+  return axios.post("/login", loginInfo)
 };

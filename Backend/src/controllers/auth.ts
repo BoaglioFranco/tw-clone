@@ -6,28 +6,30 @@ import { User } from "../entities/User";
 export const loginUser: RequestHandler = async (req, res, next) => {
   const usernameOrEmail = req.body.usernameOrEmail;
   const password = req.body.password;
-  
 
   const userTofind = usernameOrEmail.includes("@")
-    ? { where: { email: usernameOrEmail } }
-    : { where: { username: usernameOrEmail } };
+    ? { where: { email: usernameOrEmail, isActive: true } }
+    : { where: { username: usernameOrEmail, isActive: true } };
 
   const user = await User.findOne(userTofind);
   if (!user) {
-    res.status(401).send({
-      errors: [{ field: "usernameOrEmail", message: "user doesnt exist" }],
+    res.status(401).json({
+      errors: [{ field: "usernameOrEmail", message: "User doesnt exist" }],
     });
     return;
   }
   const isValid = await argon2.verify(user.password, password);
   if (!isValid) {
-    res.status(401).send({
-      errors: [{ field: "password", message: "incorrect password!" }],
+    res.status(401).json({
+      errors: [{ field: "password", message: "Incorrect password!" }],
     });
     return;
   }
 
-  const token = jwt.sign({ userInfo: "TODO" }, "shhh, secret token");
+  const token = jwt.sign(
+    { username: user.username, email: user.email },
+    "shhh, secret token"
+  );
   res.status(200).json({ token });
 };
 
@@ -37,8 +39,7 @@ export const registerUser: RequestHandler = async (req, res, next) => {
     password: req.body.password,
     email: req.body.email,
   };
-  //validate input
-  //hash password
+  //TODO: validate input
   const hashedPw = await argon2.hash(userInput.password);
   let user: User;
   try {
@@ -49,12 +50,11 @@ export const registerUser: RequestHandler = async (req, res, next) => {
     }).save();
     res.status(201).send();
   } catch (e) {
-    if(e.message.includes('email')){
+    if (e.message.includes("email")) {
       res.status(400).json({
         errors: [{ field: "email", message: "That email is already in use." }],
       });
-    } 
-    else if(e.message.includes('username')){
+    } else if (e.message.includes("username")) {
       res.status(400).json({
         errors: [{ field: "username", message: "Username is already taken." }],
       });
