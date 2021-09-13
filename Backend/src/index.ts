@@ -1,11 +1,13 @@
 import express from "express";
 import authRoutes from "./routes/auth";
+import userRoutes from "./routes/user";
+import twitRoutes from "./routes/twit";
 import dotenv from "dotenv";
 import { PrismaClient } from ".prisma/client";
 
 dotenv.config();
 export const prisma = new PrismaClient({
-  log: [{ level: "query", emit: "event" }],
+  log: ['query', 'info', 'warn', 'error'],
 });
 
 const main = async () => {
@@ -32,6 +34,8 @@ const main = async () => {
     res.send("Puto el que lee!");
   });
   app.use(authRoutes);
+  app.use(userRoutes);
+  app.use(twitRoutes);
 
   app.listen(port, () => {
     console.log(`Server up and running on port ${port}`);

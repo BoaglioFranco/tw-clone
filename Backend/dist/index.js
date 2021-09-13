@@ -15,11 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.prisma = void 0;
 const express_1 = __importDefault(require("express"));
 const auth_1 = __importDefault(require("./routes/auth"));
+const user_1 = __importDefault(require("./routes/user"));
+const twit_1 = __importDefault(require("./routes/twit"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const client_1 = require(".prisma/client");
 dotenv_1.default.config();
 exports.prisma = new client_1.PrismaClient({
-    log: [{ level: "query", emit: "event" }],
+    log: ['query', 'info', 'warn', 'error'],
 });
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const app = express_1.default();
@@ -35,6 +37,8 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         res.send("Puto el que lee!");
     });
     app.use(auth_1.default);
+    app.use(user_1.default);
+    app.use(twit_1.default);
     app.listen(port, () => {
         console.log(`Server up and running on port ${port}`);
     });

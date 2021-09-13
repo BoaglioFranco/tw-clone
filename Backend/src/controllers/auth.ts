@@ -28,7 +28,7 @@ export const loginUser: RequestHandler = async (req, res, next) => {
   }
 
   const token = jwt.sign(
-    { username: user.username, email: user.email },
+    { username: user.username, email: user.email, id: user.id },
     "shhh, secret token"
   );
   res.status(200).json({ token });

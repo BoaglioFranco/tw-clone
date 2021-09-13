@@ -36,7 +36,7 @@ const loginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function
         });
         return;
     }
-    const token = jsonwebtoken_1.default.sign({ username: user.username, email: user.email }, "shhh, secret token");
+    const token = jsonwebtoken_1.default.sign({ username: user.username, email: user.email, id: user.id }, "shhh, secret token");
     res.status(200).json({ token });
 });
 exports.loginUser = loginUser;
