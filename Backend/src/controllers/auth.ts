@@ -1,17 +1,18 @@
+import { User } from ".prisma/client";
 import argon2 from "argon2";
 import { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
-import { User } from "../entities/User";
+import { prisma } from "../index";
 
 export const loginUser: RequestHandler = async (req, res, next) => {
-  const usernameOrEmail = req.body.usernameOrEmail;
-  const password = req.body.password;
+  const { usernameOrEmail, password } = req.body;
 
-  const userTofind = usernameOrEmail.includes("@")
+  const userTofind: any = usernameOrEmail.includes("@")
     ? { where: { email: usernameOrEmail, isActive: true } }
     : { where: { username: usernameOrEmail, isActive: true } };
+  prisma.user.findUnique({ where: {} });
 
-  const user = await User.findOne(userTofind);
+  const user = await prisma.user.findFirst(userTofind);
   if (!user) {
     res.status(401).json({
       errors: [{ field: "usernameOrEmail", message: "User doesnt exist" }],
@@ -27,7 +28,7 @@ export const loginUser: RequestHandler = async (req, res, next) => {
   }
 
   const token = jwt.sign(
-    { username: user.username, email: user.email },
+    { username: user.username, email: user.email, id: user.id },
     "shhh, secret token"
   );
   res.status(200).json({ token });
@@ -43,18 +44,21 @@ export const registerUser: RequestHandler = async (req, res, next) => {
   const hashedPw = await argon2.hash(userInput.password);
   let user: User;
   try {
-    user = await User.create({
-      username: userInput.username,
-      password: hashedPw,
-      email: userInput.email,
-    }).save();
-    res.status(201).send();
+    user = await prisma.user.create({
+      data: {
+        username: userInput.username,
+        password: hashedPw,
+        email: userInput.email,
+      }
+    });
+    res.status(201).send('douu');
   } catch (e) {
-    if (e.message.includes("email")) {
+    console.log(e)
+    if (e.message.includes("User_email_key")) {
       res.status(400).json({
         errors: [{ field: "email", message: "That email is already in use." }],
       });
-    } else if (e.message.includes("username")) {
+    } else if (e.message.includes("User_username_key")) {
       res.status(400).json({
         errors: [{ field: "username", message: "Username is already taken." }],
       });
