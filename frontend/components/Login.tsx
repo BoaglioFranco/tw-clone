@@ -1,7 +1,9 @@
+import { useRouter } from "next/dist/client/router";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { login } from "../services/user";
+import { useStore } from "../store/store";
 import styles from "../styles/Login.module.scss";
 
 interface Props {}
@@ -21,7 +23,10 @@ const Login: React.FC<Props> = (props) => {
 
   const mutation = useMutation((credentials: FormValues) => login(credentials));
 
-  if(mutation.isSuccess){
+  const setToken = useStore((store) => store.setToken);
+  const router = useRouter();
+
+  if (mutation.isSuccess) {
     console.log(mutation.data?.data);
   }
 
@@ -30,6 +35,10 @@ const Login: React.FC<Props> = (props) => {
       className={styles.inputContainer}
       onSubmit={handleSubmit((formValues) => {
         mutation.mutate(formValues, {
+          onSuccess: (res) => {
+            setToken(res.data.token, res.data.expiresIn);
+            router.replace("/home");
+          },
           onError: (errors: any) => {
             errors.response.data.errors.forEach((err: any) => {
               setError(err.field, { type: "server", message: err.message });

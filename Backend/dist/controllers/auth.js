@@ -36,8 +36,8 @@ const loginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function
         });
         return;
     }
-    const token = jsonwebtoken_1.default.sign({ username: user.username, email: user.email, id: user.id }, "shhh, secret token");
-    res.status(200).json({ token });
+    const token = jsonwebtoken_1.default.sign({ username: user.username, email: user.email, id: user.id }, "shhh, secret token", { expiresIn: "1h" });
+    res.status(200).json({ token, expiresIn: 3600000 });
 });
 exports.loginUser = loginUser;
 const registerUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -54,9 +54,9 @@ const registerUser = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
                 username: userInput.username,
                 password: hashedPw,
                 email: userInput.email,
-            }
+            },
         });
-        res.status(201).send('douu');
+        res.status(201).send("douu");
     }
     catch (e) {
         console.log(e);
