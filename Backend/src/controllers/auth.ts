@@ -29,9 +29,11 @@ export const loginUser: RequestHandler = async (req, res, next) => {
 
   const token = jwt.sign(
     { username: user.username, email: user.email, id: user.id },
-    "shhh, secret token"
+    "shhh, secret token",
+    { expiresIn: "1h" }
   );
-  res.status(200).json({ token });
+
+  res.status(200).json({ token, expiresIn: 3600000 });
 };
 
 export const registerUser: RequestHandler = async (req, res, next) => {
@@ -49,11 +51,11 @@ export const registerUser: RequestHandler = async (req, res, next) => {
         username: userInput.username,
         password: hashedPw,
         email: userInput.email,
-      }
+      },
     });
-    res.status(201).send('douu');
+    res.status(201).send("douu");
   } catch (e) {
-    console.log(e)
+    console.log(e);
     if (e.message.includes("User_email_key")) {
       res.status(400).json({
         errors: [{ field: "email", message: "That email is already in use." }],

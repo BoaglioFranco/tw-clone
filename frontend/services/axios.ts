@@ -8,6 +8,6 @@ export const axios = Axios.create({
 });
 
 axios.interceptors.request.use((request) => {
-  request.headers["token"] = useStore.getState().token;
+  request.headers["Authorization"] = `Bearer: ${useStore.getState().token}`;
   return request;
 });
