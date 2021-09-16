@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.header {
+  border: 1px solid red;
+  height: 52px;
+}
+
+.content {
+  height: 100%;
+}
+
+.navbar {
+  border: 1px solid blue;
+  height: 52px;
+}
