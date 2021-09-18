@@ -17,7 +17,8 @@ model User {
   username   String   @unique
   password   String
   email      String   @unique
-  bio        String?   @db.VarChar(240)
+  bio        String?  @db.VarChar(240)
+  pfp        String
   isActive   Boolean  @default(true)
   twits      Twit[]
   likes      Like[]

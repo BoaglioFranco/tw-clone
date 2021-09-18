@@ -30,7 +30,7 @@ export const loginUser: RequestHandler = async (req, res, next) => {
   const token = jwt.sign(
     { username: user.username, email: user.email, id: user.id },
     "shhh, secret token",
-    { expiresIn: "1h" }
+    { expiresIn: "8h" }
   );
 
   res.status(200).json({ token, expiresIn: 3600000 });
@@ -44,6 +44,7 @@ export const registerUser: RequestHandler = async (req, res, next) => {
   };
   //TODO: validate input
   const hashedPw = await argon2.hash(userInput.password);
+  const pfp = `https://avatars.dicebear.com/api/jdenticon/${userInput.username}.svg`
   let user: User;
   try {
     user = await prisma.user.create({
@@ -51,6 +52,7 @@ export const registerUser: RequestHandler = async (req, res, next) => {
         username: userInput.username,
         password: hashedPw,
         email: userInput.email,
+        pfp
       },
     });
     res.status(201).send("douu");

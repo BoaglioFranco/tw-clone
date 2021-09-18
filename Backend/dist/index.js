@@ -24,7 +24,7 @@ exports.prisma = new client_1.PrismaClient({
     log: ['query', 'info', 'warn', 'error'],
 });
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
-    const app = express_1.default();
+    const app = (0, express_1.default)();
     const port = 5000;
     app.use(express_1.default.json());
     app.use((_req, res, next) => {

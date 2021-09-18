@@ -13,8 +13,24 @@ export const createTwit: RequestHandler = async (req, res, next) => {
           },
         },
       },
+      include: {
+        author: {
+          select: {
+            username: true,
+            pfp: true
+          },
+        },
+        _count: {
+          select: {
+            likes: true,
+          },
+        },
+      },
     });
-    res.status(201).json({ twit });
+
+    const response = { ...twit, ...twit._count, _count: undefined }
+    console.log('rsp', response);
+    res.status(201).json(response);
   } catch (e) {
     res.status(400).send();
   }
@@ -26,12 +42,28 @@ export const getTwits: RequestHandler = async (req, res, next) => {
       include: {
         author: {
           select: {
-            username: true
-          }
-        }
+            username: true,
+            pfp: true
+          },
+        },
+        _count: {
+          select: {
+            likes: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc'
       }
     });
-    res.status(200).json(twits);
+
+    res.status(200).json(
+      twits.map((t) => ({
+        ...t,
+        likes: t._count?.likes,
+        _count: undefined,
+      }))
+    );
   } catch (e) {
     res.status(400).send();
   }

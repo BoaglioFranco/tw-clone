@@ -36,7 +36,7 @@ const loginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function
         });
         return;
     }
-    const token = jsonwebtoken_1.default.sign({ username: user.username, email: user.email, id: user.id }, "shhh, secret token", { expiresIn: "1h" });
+    const token = jsonwebtoken_1.default.sign({ username: user.username, email: user.email, id: user.id }, "shhh, secret token", { expiresIn: "8h" });
     res.status(200).json({ token, expiresIn: 3600000 });
 });
 exports.loginUser = loginUser;
@@ -47,6 +47,7 @@ const registerUser = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
         email: req.body.email,
     };
     const hashedPw = yield argon2_1.default.hash(userInput.password);
+    const pfp = `https://avatars.dicebear.com/api/jdenticon/${userInput.username}.svg`;
     let user;
     try {
         user = yield index_1.prisma.user.create({
@@ -54,6 +55,7 @@ const registerUser = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
                 username: userInput.username,
                 password: hashedPw,
                 email: userInput.email,
+                pfp
             },
         });
         res.status(201).send("douu");
