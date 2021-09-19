@@ -18,9 +18,11 @@ body {
 .link{
   display: inline-block;
   padding-bottom: 1px;
-
+  color: rgb(122, 122, 122);
+  
 }
 
 .link:hover{
-  border-bottom: 1px solid currentColor;
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }

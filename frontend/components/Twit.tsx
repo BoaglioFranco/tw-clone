@@ -1,7 +1,7 @@
 import React from "react";
 import { ITwit } from "../models/twit";
-import styles from "../styles/Tweet.module.scss";
-import Image from 'next/image'; 
+import stl from "../styles/Twit.module.scss";
+import Image from "next/image";
 
 interface Props {
   twit: ITwit;
@@ -9,12 +9,24 @@ interface Props {
 
 export const Twit: React.FC<Props> = ({ twit }) => {
   return (
-    <div>
-      <h4>@{twit.author.username}</h4>
-      <Image src={twit.author.pfp} alt="pfp" width={48} height={48} />
-      <p>{twit.text}</p>
-      <div>likes: {twit.likes}</div>
-      <hr />
-    </div>
+    <>
+      <div className={stl.twitContainer}>
+        <div className={stl.aside}>
+          <Image
+            className={stl.img}
+            src={twit.author.pfp}
+            alt="pfp"
+            width={40}
+            height={40}
+            layout="fixed"
+          />
+        </div>
+        <div className={stl.content}>
+          <h4 className={`link ${stl.author}`}>@{twit.author.username}</h4>
+          <p className={stl.text}>{twit.text}</p>
+          <div>likes: {twit.likes}</div>
+        </div>
+      </div>
+    </>
   );
 };
