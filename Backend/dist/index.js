@@ -19,23 +19,16 @@ const user_1 = __importDefault(require("./routes/user"));
 const twit_1 = __importDefault(require("./routes/twit"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const client_1 = require(".prisma/client");
+const cors_1 = __importDefault(require("cors"));
 dotenv_1.default.config();
 exports.prisma = new client_1.PrismaClient({
-    log: ['query', 'info', 'warn', 'error'],
+    log: ["query", "info", "warn", "error"],
 });
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const app = (0, express_1.default)();
     const port = 5000;
     app.use(express_1.default.json());
-    app.use((_req, res, next) => {
-        res.setHeader("Access-Control-Allow-Origin", "*");
-        res.setHeader("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, Token");
-        res.setHeader("Access-Control-Allow-Methods", "DELETE, POST, GET, PUT, OPTIONS");
-        next();
-    });
-    app.get("/", (req, res, next) => {
-        res.send("Puto el que lee!");
-    });
+    app.use((0, cors_1.default)());
     app.use(auth_1.default);
     app.use(user_1.default);
     app.use(twit_1.default);

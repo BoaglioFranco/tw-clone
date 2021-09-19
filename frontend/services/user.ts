@@ -8,7 +8,6 @@ export const registerUser = (user: {
   return axios.post("/register", user);
 };
 
-
 interface LoginResponse {
   token: string;
   expiresIn: number;
@@ -18,5 +17,13 @@ export const login = (loginInfo: {
   usernameOrEmail: string;
   password: string;
 }) => {
-  return axios.post<LoginResponse>("/login", loginInfo)
+  return axios.post<LoginResponse>("/login", loginInfo);
+};
+
+export const getProfile = (username: string) => {
+  return axios.get<any>(`/user/getProfile`, {
+    params: {
+      username,
+    },
+  });
 };

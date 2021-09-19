@@ -37,9 +37,9 @@ export const unfollowUser: RequestHandler = async (req, res, next) => {
 };
 
 export const getProfile: RequestHandler = async (req, res, next) => {
-  const { id } = req.body;
+  const { username } = req.query;
   const profile = await prisma.user.findUnique({
-    where: { id },
+    where: { username: username as string },
     select: {
       id: true,
       username: true,

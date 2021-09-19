@@ -4,10 +4,11 @@ import userRoutes from "./routes/user";
 import twitRoutes from "./routes/twit";
 import dotenv from "dotenv";
 import { PrismaClient } from ".prisma/client";
+import cors from "cors";
 
 dotenv.config();
 export const prisma = new PrismaClient({
-  log: ['query', 'info', 'warn', 'error'],
+  log: ["query", "info", "warn", "error"],
 });
 
 const main = async () => {
@@ -16,23 +17,23 @@ const main = async () => {
 
   app.use(express.json()); //Parses json body types.
 
-  app.use((_req, res, next) => {
-    //CORS STUFF
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, Token"
-    ); //added token for API auth
-    res.setHeader(
-      "Access-Control-Allow-Methods",
-      "DELETE, POST, GET, PUT, OPTIONS"
-    );
-    next();
-  });
+  app.use(cors());
 
-  app.get("/", (req, res, next) => {
-    res.send("Puto el que lee!");
-  });
+  // app.use((_req, res, next) => {
+  //   //CORS STUFF
+  //   res.setHeader("Access-Control-Allow-Origin", "*");
+  //   res.setHeader(
+  //     "Access-Control-Allow-Headers",
+  //     "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+  //   );
+  //   res.setHeader(
+  //     "Access-Control-Allow-Methods",
+  //     "DELETE, POST, GET, PUT, OPTIONS"
+  //   );
+  //   next();
+  // });
+
+
   app.use(authRoutes);
   app.use(userRoutes);
   app.use(twitRoutes);
