@@ -16,7 +16,7 @@ export const createUserSchema = yup.object().shape({
       .trim(),
     email: yup.string().required().email(),
   }),
-  param: yup.object({}),
+  
 });
 
 export const loginUserSchema = yup.object().shape({
@@ -28,6 +28,5 @@ export const loginUserSchema = yup.object().shape({
       .min(4, "The password must be at least 4 characters long")
       .max(20, "The password cannot be longer than 20 characters")
       .trim(),
-  }),
-  param: yup.object({}),
+  })
 });

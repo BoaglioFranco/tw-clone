@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { login } from "../services/user";
 import { useStore } from "../store/store";
-import styles from "../styles/Login.module.scss";
+import stl from "../styles/Login.module.scss";
 
 interface Props {}
 
@@ -32,7 +32,7 @@ const Login: React.FC<Props> = (props) => {
 
   return (
     <form
-      className={styles.inputContainer}
+      className={stl.inputContainer}
       onSubmit={handleSubmit((formValues) => {
         mutation.mutate(formValues, {
           onSuccess: (res) => {
@@ -83,7 +83,7 @@ const Login: React.FC<Props> = (props) => {
         </p>
       </div>
 
-      <button className={`button is-primary ${styles.loginBtn}`}>Log In</button>
+      <button className={`button is-primary ${stl.loginBtn}`}>Log In</button>
     </form>
   );
 };
