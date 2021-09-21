@@ -8,3 +8,7 @@ export const getAllTwits = () => {
 export const postTwit = (text: string) => {
   return axios.post("twit/create", { text });
 };
+
+export const likeTwit = (id: number) => {
+  return axios.post("twit/like", { id });
+};

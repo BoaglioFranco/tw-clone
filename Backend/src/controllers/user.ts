@@ -52,12 +52,21 @@ export const getProfile: RequestHandler = async (req, res, next) => {
           twits: true,
         },
       },
+      followedBy: {
+        take: 1,
+        where: {id: req.user.id},
+        select: {
+          id: true
+        }
+      }
     },
   });
   if (!profile) {
     res.status(400).send();
     return;
   }
+  console.log(profile);
+  const isFollowing = profile.followedBy.length > 0; 
 
   res.status(200).json({
     id: profile.id,
@@ -67,6 +76,7 @@ export const getProfile: RequestHandler = async (req, res, next) => {
     followedBy: profile._count?.followedBy,
     following: profile._count?.following,
     twitAmount: profile._count?.twits,
+    isFollowing
   });
 };
 

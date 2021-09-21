@@ -17,7 +17,7 @@ export const createTwit: RequestHandler = async (req, res, next) => {
         author: {
           select: {
             username: true,
-            pfp: true
+            pfp: true,
           },
         },
         _count: {
@@ -28,8 +28,8 @@ export const createTwit: RequestHandler = async (req, res, next) => {
       },
     });
 
-    const response = { ...twit, ...twit._count, _count: undefined }
-    console.log('rsp', response);
+    const response = { ...twit, ...twit._count, _count: undefined };
+    console.log("rsp", response);
     res.status(201).json(response);
   } catch (e) {
     res.status(400).send();
@@ -43,7 +43,7 @@ export const getTwits: RequestHandler = async (req, res, next) => {
         author: {
           select: {
             username: true,
-            pfp: true
+            pfp: true,
           },
         },
         _count: {
@@ -51,15 +51,24 @@ export const getTwits: RequestHandler = async (req, res, next) => {
             likes: true,
           },
         },
+        likes: {
+          where: {
+            userId: req.user.id,
+          },
+          select: {
+            userId: true,
+          },
+        },
       },
       orderBy: {
-        createdAt: 'desc'
-      }
+        createdAt: "desc",
+      },
     });
 
     res.status(200).json(
       twits.map((t) => ({
         ...t,
+        hasLiked: t.likes.length > 0,
         likes: t._count?.likes,
         _count: undefined,
       }))
@@ -72,8 +81,8 @@ export const getTwits: RequestHandler = async (req, res, next) => {
 export const likeTwit: RequestHandler = async (req, res, next) => {
   const { id } = req.body;
   try {
-    const like = await prisma.like.findFirst({
-      where: { userId: req.user.id, twitId: id },
+    const like = await prisma.like.findUnique({
+      where: { userId_twitId: { userId: req.user.id, twitId: id } },
     });
     if (!like) {
       await prisma.like.create({
