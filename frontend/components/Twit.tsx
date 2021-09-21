@@ -55,6 +55,10 @@ export const Twit: React.FC<Props> = ({ twit }) => {
               <span>{twit.likes}</span>
             </div>
           </div>
+          <time className={stl.time}>
+            {new Date(twit.createdAt).toLocaleDateString()}{" "}
+            {new Date(twit.createdAt).toLocaleTimeString()}
+          </time>
         </div>
       </div>
     </>
