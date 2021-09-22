@@ -10,7 +10,6 @@ export const loginUser: RequestHandler = async (req, res, next) => {
   const userTofind: any = usernameOrEmail.includes("@")
     ? { where: { email: usernameOrEmail, isActive: true } }
     : { where: { username: usernameOrEmail, isActive: true } };
-  prisma.user.findUnique({ where: {} });
 
   const user = await prisma.user.findFirst(userTofind);
   if (!user) {
@@ -33,7 +32,13 @@ export const loginUser: RequestHandler = async (req, res, next) => {
     { expiresIn: "8h" }
   );
 
-  res.status(200).json({ token, expiresIn: 3600000 });
+  res
+    .status(200)
+    .json({
+      user: { username: user.username, pfp: user.pfp, id: user.id },
+      token,
+      expiresIn: 3600000 * 8,
+    });
 };
 
 export const registerUser: RequestHandler = async (req, res, next) => {
@@ -44,7 +49,7 @@ export const registerUser: RequestHandler = async (req, res, next) => {
   };
   //TODO: validate input
   const hashedPw = await argon2.hash(userInput.password);
-  const pfp = `https://avatars.dicebear.com/api/jdenticon/${userInput.username}.svg`
+  const pfp = `https://avatars.dicebear.com/api/jdenticon/${userInput.username}.svg`;
   let user: User;
   try {
     user = await prisma.user.create({
@@ -52,7 +57,7 @@ export const registerUser: RequestHandler = async (req, res, next) => {
         username: userInput.username,
         password: hashedPw,
         email: userInput.email,
-        pfp
+        pfp,
       },
     });
     res.status(201).send("douu");

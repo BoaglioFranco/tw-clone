@@ -26,30 +26,10 @@ const CreateTwit: React.FC<Props> = ({}) => {
   };
 
   const handleText = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    if (e.target.value.length <= 20) {
+    if (e.target.value.length <= 240) {
       setText(e.target.value);
     }
   };
-
-  /* return (
-    <div className="m-1">
-      <textarea
-        className={`${stl.textarea} textarea p-2`}
-        placeholder="Share your thoughts"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        rows={2}
-      ></textarea>
-      <div className={`${stl.options} mt-1`}>
-        <button
-          className={`${stl.button} button is-primary ml-auto`}
-          onClick={sendTwit}
-        >
-          Send
-        </button>
-      </div>
-    </div>
-  ); */
 
   return (
     <div>

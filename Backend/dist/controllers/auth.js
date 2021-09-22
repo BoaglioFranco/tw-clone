@@ -21,7 +21,6 @@ const loginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function
     const userTofind = usernameOrEmail.includes("@")
         ? { where: { email: usernameOrEmail, isActive: true } }
         : { where: { username: usernameOrEmail, isActive: true } };
-    index_1.prisma.user.findUnique({ where: {} });
     const user = yield index_1.prisma.user.findFirst(userTofind);
     if (!user) {
         res.status(401).json({
@@ -37,7 +36,13 @@ const loginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function
         return;
     }
     const token = jsonwebtoken_1.default.sign({ username: user.username, email: user.email, id: user.id }, "shhh, secret token", { expiresIn: "8h" });
-    res.status(200).json({ token, expiresIn: 3600000 });
+    res
+        .status(200)
+        .json({
+        user: { username: user.username, pfp: user.pfp, id: user.id },
+        token,
+        expiresIn: 3600000 * 8,
+    });
 });
 exports.loginUser = loginUser;
 const registerUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -55,7 +60,7 @@ const registerUser = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
                 username: userInput.username,
                 password: hashedPw,
                 email: userInput.email,
-                pfp
+                pfp,
             },
         });
         res.status(201).send("douu");
