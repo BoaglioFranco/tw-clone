@@ -15,6 +15,8 @@ const CreateTwit: React.FC<Props> = ({}) => {
   const sendTwit = () => {
     mutation.mutate(text, {
       onSuccess: (res) => {
+        setToggle(false);
+        setText('');
         queryClient.setQueryData("twits", (twits: any) => {
           return {
             ...twits,

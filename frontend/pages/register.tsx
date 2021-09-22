@@ -1,4 +1,5 @@
 import { NextPage } from "next";
+import { useRouter } from "next/dist/client/router";
 import { RegisterOptions, useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { registerUser } from "../services/user";
@@ -14,6 +15,8 @@ const Register: NextPage = () => {
   const mutation = useMutation((user: RegisterFormValues) =>
     registerUser(user)
   );
+
+  const router = useRouter();
 
   const {
     register,
@@ -55,6 +58,9 @@ const Register: NextPage = () => {
         className={styles.content}
         onSubmit={handleSubmit((formValues) => {
           mutation.mutate(formValues, {
+            onSuccess: ()=>{
+              router.push('/')
+            },
             onError: (errors: any) => {
               errors.response.data.errors.forEach((err: any) => {
                 setError(err.field, { type: "server", message: err.message });
