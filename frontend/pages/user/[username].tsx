@@ -15,7 +15,11 @@ const Profile: NextPage = (props) => {
 
   console.log(data?.data);
 
-  return <div>{JSON.stringify(data?.data, null, 2)}</div>;
+  return (
+    <>
+      <div>{JSON.stringify(data?.data, null, 2)}</div>
+    </>
+  );
 };
 
 export default Profile;
