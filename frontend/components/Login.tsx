@@ -23,7 +23,10 @@ const Login: React.FC<Props> = (props) => {
 
   const mutation = useMutation((credentials: FormValues) => login(credentials));
 
-  const setToken = useStore((store) => store.setToken);
+  /// FRANCO """"PROGRAMADOR"""""
+  /// const setToken = useStore((store) => store.setToken);
+  const store = useStore();
+
   const router = useRouter();
 
   if (mutation.isSuccess) {
@@ -36,7 +39,8 @@ const Login: React.FC<Props> = (props) => {
       onSubmit={handleSubmit((formValues) => {
         mutation.mutate(formValues, {
           onSuccess: (res) => {
-            setToken(res.data.token, res.data.expiresIn);
+            store.setToken(res.data.token, res.data.expiresIn);
+            store.setUser(res.data.user);
             router.replace("/home");
           },
           onError: (errors: any) => {

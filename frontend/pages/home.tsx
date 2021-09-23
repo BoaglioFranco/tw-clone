@@ -12,7 +12,9 @@ const Home: NextPage = () => {
   // console.log(twits);
   return (
     <div className={styles.container}>
-      <div className={`${styles.header} has-background-primary has-text-white is-size-3`}>
+      <div
+        className={`${styles.header} has-background-primary has-text-white is-size-3`}
+      >
         Tweeter
       </div>
       <div className={styles.content}>

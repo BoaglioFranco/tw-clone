@@ -2,6 +2,8 @@ import React, { ChangeEvent, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { ITwit } from "../models/twit";
 import { postTwit } from "../services/twits";
+import Image from "next/image";
+import { useStore } from "../store/store";
 import stl from "../styles/CreateTweet.module.scss";
 
 interface Props {}
@@ -11,12 +13,13 @@ const CreateTwit: React.FC<Props> = ({}) => {
   const mutation = useMutation((text: string) => postTwit(text));
   const [text, setText] = useState("");
   const [isToggle, setToggle] = useState(false);
+  const user = useStore((store) => store.user)!;
 
   const sendTwit = () => {
     mutation.mutate(text, {
       onSuccess: (res) => {
         setToggle(false);
-        setText('');
+        setText("");
         queryClient.setQueryData("twits", (twits: any) => {
           return {
             ...twits,
@@ -39,7 +42,17 @@ const CreateTwit: React.FC<Props> = ({}) => {
         <div className="modal-background"></div>
         <div className="modal-card">
           <header className="modal-card-head">
-            <p className="modal-card-title">User info</p>
+            <Image
+              className={stl.img}
+              src={user.pfp}
+              alt="pfp"
+              width={40}
+              height={40}
+              layout="fixed"
+            />
+            <p className="link" style={{ fontSize: "1.1rem" }}>
+              @{user.username}
+            </p>
             <button
               className="delete"
               aria-label="close"

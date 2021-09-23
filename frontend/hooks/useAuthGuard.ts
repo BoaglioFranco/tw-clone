@@ -6,6 +6,7 @@ export const useAuthGuard = (requireAuth: boolean) => {
   const user = useStore((store) => store.user);
   const router = useRouter();
   useEffect(() => {
+    console.log(user);
     if (requireAuth && !user) {
       router.replace("/");
     } else if (!requireAuth && user) {

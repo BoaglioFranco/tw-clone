@@ -9,6 +9,7 @@ export const registerUser = (user: {
 };
 
 interface LoginResponse {
+  user: { username: string; pfp: string; id: number };
   token: string;
   expiresIn: number;
 }

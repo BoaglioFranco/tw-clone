@@ -1,13 +1,13 @@
 import { isServer } from "../utils/isServer";
 import create from "zustand";
 
-const saveToLocalStorage = (token: string) => {
-  localStorage.token = token;
+const saveToLocalStorage = (key: string, value: any) => {
+  localStorage.setItem(key, JSON.stringify(value));
 };
 
-const readFromLocalStorage = () => {
-  if (!isServer){
-    return localStorage.token;
+const readFromLocalStorage = (key: string) => {
+  if (!isServer) {
+    return localStorage.getItem(key);
   }
   return null;
 };
@@ -16,21 +16,28 @@ interface StoreState {
   token: string;
   user: {
     username: string;
-    email: string;
+    pfp: string;
     id: number;
   } | null;
   setToken: (token: string, expiresIn: number) => any;
+  setUser: (user: { username: string; pfp: string; id: number }) => any;
 }
 
 //TODO: FIX TOKEN EXPIRATION ON PAGE RELOAD
 export const useStore = create<StoreState>((set) => ({
-  token: readFromLocalStorage() || "",
-  user: null,
+  token: readFromLocalStorage("token") || "",
+  user: JSON.parse(readFromLocalStorage("user")!) || null,
   setToken: (token, expiresIn) => {
     set((state) => ({ token }));
-    saveToLocalStorage(token);
+    saveToLocalStorage("token", token);
     setTimeout(() => {
       console.log("token expired");
     }, expiresIn - 10000);
+  },
+  setUser: (user) => {
+    set((state) => {
+      user;
+    });
+    saveToLocalStorage("user", user);
   },
 }));
