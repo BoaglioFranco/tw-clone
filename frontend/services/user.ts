@@ -1,3 +1,4 @@
+import { IProfile } from "../models/userProfile";
 import { axios } from "./axios";
 
 export const registerUser = (user: {
@@ -22,7 +23,7 @@ export const login = (loginInfo: {
 };
 
 export const getProfile = (username: string) => {
-  return axios.get<any>(`/user/getProfile`, {
+  return axios.get<IProfile>(`/user/getProfile`, {
     params: {
       username,
     },

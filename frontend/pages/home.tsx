@@ -3,8 +3,14 @@ import { useQuery } from "react-query";
 import { getAllTwits } from "../services/twits";
 import { Twit } from "../components/Twit";
 import styles from "../styles/Home.module.scss";
-import CreateTwit from "../components/CreateTwit";
 import { useAuthGuard } from "../hooks/useAuthGuard";
+
+import dynamic from "next/dynamic";
+
+//import createTwit with no ssr
+const CreateTwit = dynamic(() => import("../components/CreateTwit"), {
+  ssr: false,
+});
 
 const Home: NextPage = () => {
   useAuthGuard(true);
