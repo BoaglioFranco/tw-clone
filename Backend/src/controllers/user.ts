@@ -54,11 +54,11 @@ export const getProfile: RequestHandler = async (req, res, next) => {
       },
       followedBy: {
         take: 1,
-        where: {id: req.user.id},
+        where: { id: req.user.id },
         select: {
-          id: true
-        }
-      }
+          id: true,
+        },
+      },
     },
   });
   if (!profile) {
@@ -66,7 +66,7 @@ export const getProfile: RequestHandler = async (req, res, next) => {
     return;
   }
   console.log(profile);
-  const isFollowing = profile.followedBy.length > 0; 
+  const isFollowing = profile.followedBy.length > 0;
 
   res.status(200).json({
     id: profile.id,
@@ -76,7 +76,7 @@ export const getProfile: RequestHandler = async (req, res, next) => {
     followedBy: profile._count?.followedBy,
     following: profile._count?.following,
     twitAmount: profile._count?.twits,
-    isFollowing
+    isFollowing,
   });
 };
 
@@ -91,5 +91,29 @@ export const getUserTwits: RequestHandler = async (req, res, next) => {
       },
     },
   });
-  res.status(200).json(twits) //TODO: MAPEAR TWITS, AGREGAR USER
+  res.status(200).json(twits); //TODO: MAPEAR TWITS, AGREGAR USER
+};
+
+export const findUser: RequestHandler = async (req, res, next) => {
+  const { match } = req.query;
+  if (typeof match !== "string") {
+    res.status(400);
+    return;
+  }
+
+  const users = await prisma.user.findMany({
+    where: { username: { contains: match } },
+    include: {
+      _count: {
+        select: {
+          followedBy: true,
+          following: true,
+        },
+      },
+    },
+  });
+
+  res
+    .status(200)
+    .send(users.map((u) => ({ ...u, ...u._count, _count: undefined })));
 };

@@ -29,3 +29,11 @@ export const getProfile = (username: string) => {
     },
   });
 };
+
+export const followUser = (id: string | number) => {
+  return axios.post<any>("/user/follow", { id });
+};
+
+export const unfollowUser = (id: string | number) => {
+  return axios.post<any>("/user/unfollow", { id });
+};

@@ -102,3 +102,49 @@ export const likeTwit: RequestHandler = async (req, res, next) => {
     res.status(400).send();
   }
 };
+
+export const findTwits: RequestHandler = async (req, res, next) => {
+  const { match } = req.query;
+  if (typeof match !== "string") {
+    res.status(400).send();
+    return;
+  }
+  const twits = await prisma.twit.findMany({
+    where: {
+      text: { contains: match },
+    },
+    include: {
+      author: {
+        select: {
+          username: true,
+          pfp: true,
+        },
+      },
+      _count: {
+        select: {
+          likes: true,
+        },
+      },
+      likes: {
+        where: {
+          userId: req.user.id,
+        },
+        select: {
+          userId: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  res.status(200).json(
+    twits.map((t) => ({
+      ...t,
+      hasLiked: t.likes.length > 0,
+      likes: t._count?.likes,
+      _count: undefined,
+    }))
+  );
+};
