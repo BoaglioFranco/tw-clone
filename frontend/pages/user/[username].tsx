@@ -1,7 +1,10 @@
 import { NextPage } from "next";
 import { useRouter } from "next/dist/client/router";
+import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import UserTwits from "../../components/UserTwits";
 import { followUser, getProfile, unfollowUser } from "../../services/user";
+import stl from "../../styles/UserProfile.module.scss";
 
 const Profile: NextPage = (props) => {
   const router = useRouter();
@@ -12,6 +15,7 @@ const Profile: NextPage = (props) => {
     () => getProfile(username as string),
     { enabled: !!username }
   );
+  const [feed, setFeed] = useState<"twits" | "likes">("twits");
 
   const mutation = useMutation((id: number) =>
     data?.data.isFollowing ? unfollowUser(id) : followUser(id)
@@ -24,7 +28,7 @@ const Profile: NextPage = (props) => {
           //updating the cache after follow button press to reflect the current state
           cache.data.isFollowing = !cache.data.isFollowing;
           cache.data.followedBy = cache.data.isFollowing
-            ? cache.data.followedBy+ 1
+            ? cache.data.followedBy + 1
             : cache.data.followedBy - 1;
 
           return cache;
@@ -49,6 +53,21 @@ const Profile: NextPage = (props) => {
         </span>
         <span>{data?.data.isFollowing ? "Unfollow" : "Follow"}</span>
       </button>
+      <div className="tabs is-fullwidth mt-3">
+        <ul>
+          <li>
+            <a onClick={() => setFeed("twits")}>Twits</a>
+          </li>
+          <li>
+            <a onClick={() => setFeed("likes")}>Likes</a>
+          </li>
+        </ul>
+      </div>
+      {data?.data.id && (
+        <div className={stl.feed}>
+          <UserTwits feedType={feed} userId={data.data.id} />
+        </div>
+      )}
     </>
   );
 };

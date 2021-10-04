@@ -81,17 +81,50 @@ export const getProfile: RequestHandler = async (req, res, next) => {
 };
 
 export const getUserTwits: RequestHandler = async (req, res, next) => {
-  const { id } = req.params;
-
-  const twits = await prisma.twit.findMany({
-    where: { authorId: +id },
-    include: {
-      _count: {
-        select: { likes: true },
+  const { id } = req.query;
+  if (typeof id !== "string") {
+    res.status(400);
+    return;
+  }
+  try {
+    const twits = await prisma.twit.findMany({
+      where: { authorId: +id},
+      include: {
+        author: {
+          select: {
+            username: true,
+            pfp: true,
+          },
+        },
+        _count: {
+          select: {
+            likes: true,
+          },
+        },
+        likes: {
+          where: {
+            userId: req.user.id,
+          },
+          select: {
+            userId: true,
+          },
+        },
       },
-    },
-  });
-  res.status(200).json(twits); //TODO: MAPEAR TWITS, AGREGAR USER
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    res.status(200).json(
+      twits.map((t) => ({
+        ...t,
+        hasLiked: t.likes.length > 0,
+        likes: t._count?.likes,
+        _count: undefined,
+      }))
+    );
+  } catch (e) {
+    res.status(400).send();
+  }
 };
 
 export const findUser: RequestHandler = async (req, res, next) => {

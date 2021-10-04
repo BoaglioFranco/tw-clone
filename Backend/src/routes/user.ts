@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { followUser, getProfile, unfollowUser } from "../controllers/user";
+import { followUser, getProfile, getUserTwits, unfollowUser } from "../controllers/user";
 import { checkAuth } from "../middleware/checkAuth";
 
 const router = Router();
@@ -10,6 +10,6 @@ router.post("/user/unfollow", checkAuth, unfollowUser);
 
 router.get("/user/getProfile", checkAuth, getProfile);
 
-router.get("/user/getTwits", )
+router.get("/user/getTwits", checkAuth, getUserTwits)
 
 export default router;

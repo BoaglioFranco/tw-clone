@@ -1,3 +1,4 @@
+import { ITwit } from "../models/twit";
 import { IProfile } from "../models/userProfile";
 import { axios } from "./axios";
 
@@ -36,4 +37,8 @@ export const followUser = (id: string | number) => {
 
 export const unfollowUser = (id: string | number) => {
   return axios.post<any>("/user/unfollow", { id });
+};
+
+export const getUserTwits = (id: string | number) => {
+  return axios.get<ITwit[]>("/user/getTwits", { params: { id } });
 };
