@@ -42,3 +42,7 @@ export const unfollowUser = (id: string | number) => {
 export const getUserTwits = (id: string | number) => {
   return axios.get<ITwit[]>("/user/getTwits", { params: { id } });
 };
+
+export const getUserLikes = (id: string | number) => {
+  return axios.get<ITwit[]>("user/getLikes", { params: { id } });
+};

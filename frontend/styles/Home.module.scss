@@ -1,18 +1,6 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  align-content: space-between;
-}
 
-.header {
-  height: 52px;
-}
 
 .content {
-  height: 100%;
+  margin-top: .5rem;
 }
 
-.navbar {
-  border: 1px solid blue;
-  height: 52px;
-}

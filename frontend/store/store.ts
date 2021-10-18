@@ -1,19 +1,11 @@
 import { isServer } from "../utils/isServer";
 import create from "zustand";
+import Cookies from "universal-cookie";
 
-const saveToLocalStorage = (key: string, value: any) => {
-  if (!isServer) {
-    localStorage.setItem(key, JSON.stringify(value));
-  }
-};
+const cookies = new Cookies();
 
-const readFromLocalStorage = (key: string) => {
-  if (!isServer) {
-    const parse = JSON.parse(localStorage.getItem(key)!);
-    console.log(parse);
-    return parse;
-  }
-  return null;
+const setCookie = (key: string, value: any) => {
+  document.cookie = `${key}=${JSON.stringify(value)}; path=/`;
 };
 
 interface StoreState {
@@ -29,11 +21,11 @@ interface StoreState {
 
 //TODO: FIX TOKEN EXPIRATION ON PAGE RELOAD
 export const useStore = create<StoreState>((set) => ({
-  token: readFromLocalStorage("token") || "",
-  user: readFromLocalStorage("user") || null,
+  token: cookies.get('token') || "",
+  user: cookies.get('user') || null,
   setToken: (token, expiresIn) => {
     set(() => ({ token }));
-    saveToLocalStorage("token", token);
+    setCookie("token", token);
     setTimeout(() => {
       console.log("token expired");
     }, expiresIn - 10000);
@@ -42,6 +34,6 @@ export const useStore = create<StoreState>((set) => ({
     set(() => {
       user;
     });
-    saveToLocalStorage("user", user);
+    setCookie("user", user);
   },
 }));

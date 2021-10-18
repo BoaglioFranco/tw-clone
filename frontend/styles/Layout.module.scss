@@ -1,0 +1,16 @@
+.container{
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1;
+    overflow: auto;
+    // position: relative;
+}
+
+.footer{
+    height: 50px;
+    background-color: #000;
+}

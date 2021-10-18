@@ -17,10 +17,11 @@
   height: 56px;
   border-radius: 9999px;
   margin-left: auto;
-  position: absolute;
-  top: 85%;
+  position: fixed;
+  top: calc(100% - 95px);
   left: 90%;
   transform: translate(-50%, -50%);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .ch {

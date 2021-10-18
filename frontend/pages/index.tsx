@@ -2,8 +2,10 @@ import type { NextPage } from "next";
 import Login from "../components/Login";
 import styles from "../styles/Login.module.scss";
 import Link from "next/link";
+import { useAuthGuard } from "../hooks/useAuthGuard";
 
-const Home: NextPage = () => {
+const Index: NextPage = () => {
+  useAuthGuard(false);
   return (
     <div className={styles.content}>
       <h2 className="is-size-1 has-text-weight-bold">
@@ -21,4 +23,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Index;

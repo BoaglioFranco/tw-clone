@@ -29,9 +29,6 @@ const Login: React.FC<Props> = (props) => {
 
   const router = useRouter();
 
-  if (mutation.isSuccess) {
-    console.log(mutation.data?.data);
-  }
 
   return (
     <form

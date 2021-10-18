@@ -37,7 +37,7 @@ const CreateTwit: React.FC<Props> = ({}) => {
   };
 
   return (
-    <div>
+    <>
       <div className={`modal ${isToggle ? "is-active" : null}`}>
         <div className="modal-background"></div>
         <div className="modal-card">
@@ -86,7 +86,7 @@ const CreateTwit: React.FC<Props> = ({}) => {
           <i className="bi bi-pen"></i>
         </span>
       </a>
-    </div>
+    </>
   );
 };
 

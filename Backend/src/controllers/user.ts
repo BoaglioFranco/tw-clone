@@ -45,6 +45,7 @@ export const getProfile: RequestHandler = async (req, res, next) => {
       username: true,
       createdAt: true,
       bio: true,
+      pfp: true,
       _count: {
         select: {
           followedBy: true,
@@ -73,6 +74,7 @@ export const getProfile: RequestHandler = async (req, res, next) => {
     username: profile.username,
     createdAt: profile.createdAt,
     bio: profile.bio,
+    pfp: profile.pfp,
     followedBy: profile._count?.followedBy,
     following: profile._count?.following,
     twitAmount: profile._count?.twits,
@@ -88,7 +90,54 @@ export const getUserTwits: RequestHandler = async (req, res, next) => {
   }
   try {
     const twits = await prisma.twit.findMany({
-      where: { authorId: +id},
+      where: { authorId: +id },
+      include: {
+        author: {
+          select: {
+            username: true,
+            pfp: true,
+          },
+        },
+        _count: {
+          select: {
+            likes: true,
+          },
+        },
+        likes: {
+          where: {
+            userId: req.user.id,
+          },
+          select: {
+            userId: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    res.status(200).json(
+      twits.map((t) => ({
+        ...t,
+        hasLiked: t.likes.length > 0,
+        likes: t._count?.likes,
+        _count: undefined,
+      }))
+    );
+  } catch (e) {
+    res.status(400).send();
+  }
+};
+
+export const getUserLikes: RequestHandler = async (req, res, next) => {
+  const { id } = req.query;
+  if (typeof id !== "string") {
+    res.status(400);
+    return;
+  }
+  try {
+    const twits = await prisma.twit.findMany({
+      where: { likes: { some: { userId: +id } } },
       include: {
         author: {
           select: {

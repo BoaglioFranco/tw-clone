@@ -1,58 +1,44 @@
 import { NextPage } from "next";
 import { useRouter } from "next/dist/client/router";
-import { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useEffect, useState } from "react";
+import {  useQuery, useQueryClient } from "react-query";
+import Layout from "../../components/Layout/Layout";
+import ProfileArea from "../../components/ProfileArea";
 import UserTwits from "../../components/UserTwits";
-import { followUser, getProfile, unfollowUser } from "../../services/user";
+import { useAuthGuard } from "../../hooks/useAuthGuard";
+import { getProfile } from "../../services/user";
 import stl from "../../styles/UserProfile.module.scss";
 
 const Profile: NextPage = (props) => {
+  useAuthGuard(true);
+
   const router = useRouter();
   const queryClient = useQueryClient();
   const { username } = router.query;
-  const { data } = useQuery(
+  const { data, isError,status } = useQuery(
     ["profile", username],
     () => getProfile(username as string),
-    { enabled: !!username }
+    { enabled: !!username, retry: false }
   );
   const [feed, setFeed] = useState<"twits" | "likes">("twits");
+  
 
-  const mutation = useMutation((id: number) =>
-    data?.data.isFollowing ? unfollowUser(id) : followUser(id)
-  );
+  useEffect(() => {
+    if(isError){
+      router.push("/home")
+      // router.replace('./ho');
+    }
+  }, [isError, router])
+  
 
-  const followHandler = () => {
-    mutation.mutate(data?.data.id!, {
-      onSuccess: () => {
-        queryClient.setQueryData(["profile", username], (cache: any) => {
-          //updating the cache after follow button press to reflect the current state
-          cache.data.isFollowing = !cache.data.isFollowing;
-          cache.data.followedBy = cache.data.isFollowing
-            ? cache.data.followedBy + 1
-            : cache.data.followedBy - 1;
-
-          return cache;
-        });
-      },
-    });
-  };
-
+  console.log(status);
+  
   // console.log(data?.data);
 
   return (
-    <>
-      <div>{JSON.stringify(data?.data, null, 2)}</div>
-      <button
-        onClick={followHandler}
-        className={`button ${
-          data?.data.isFollowing ? "is-danger" : "is-success"
-        } is-small`}
-      >
-        <span className="icon">
-          <i className="bi bi-heart-fill"></i>
-        </span>
-        <span>{data?.data.isFollowing ? "Unfollow" : "Follow"}</span>
-      </button>
+    <Layout>
+      {data?.data && <ProfileArea profile={data.data} />}
+      {/* <div>{JSON.stringify(data?.data, null, 2)}</div> */}
       <div className="tabs is-fullwidth mt-3">
         <ul>
           <li>
@@ -68,7 +54,7 @@ const Profile: NextPage = (props) => {
           <UserTwits feedType={feed} userId={data.data.id} />
         </div>
       )}
-    </>
+    </Layout>
   );
 };
 
