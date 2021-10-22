@@ -7,5 +7,16 @@
 
 .brand {
     font-size: 1.5rem;
-    font-weight: 500;
-}
+    font-weight: 500;}
+
+.img {
+    border-radius: 50%;
+    background-color: #fff;
+  }
+
+  .imgContainer{
+      margin-left: auto;
+      margin-right: 1rem;
+      display: flex;
+      align-items: center;
+  }

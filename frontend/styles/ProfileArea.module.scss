@@ -1,51 +1,74 @@
-.background{
-    height: 80px;
-    background-color: lightcoral;
-    overflow: visible;
-    position: relative;
-    // margin-bottom: 3rem;
+.background {
+  height: 80px;
+  background-color: lightcoral;
+  overflow: visible;
+  position: relative;
+  // margin-bottom: 3rem;
 }
 
-.pfp{
-    border: 1px solid white;
-    position: absolute;
-    background-color: #fff;
-    border-radius: 50%;
-    box-sizing: content-box;  
-    bottom: 0;
-    left: 10px;
-    transform: translateY(50%);
-    
+.pfp {
+  border: 1px solid white;
+  position: absolute;
+  background-color: #fff;
+  border-radius: 50%;
+  box-sizing: content-box;
+  bottom: 0;
+  left: 10px;
+  transform: translateY(50%);
 }
 
-.username{
-    color: rgb(122, 122, 122);
-    font-size: 1.4rem;
-    
+.username {
+  color: rgb(122, 122, 122);
+  font-size: 1.6rem;
 }
 
-.followersContainer{
-    display: flex;
-    justify-content: space-around;
+.followersContainer {
+  display: flex;
+  justify-content: space-around;
 }
 
-.infoGrid{
-    display: grid;
-    margin: 0 2rem 1rem;
-    grid-template-columns: 1fr 1fr;
+.infoGrid {
+  display: grid;
+  margin: 0 2rem 1rem;
+  grid-template-columns: 1fr 1fr;
 }
 
-.flex{
-    align-items: center;
-    display: flex;
-    margin-left: 5rem;
-    margin-bottom: .5rem;
+.flex {
+  align-items: center;
+  display: flex;
+  margin-left: 4rem;
+  margin-bottom: 0.5rem;
 }
 
-.btn{
-    border: 1px solid currentColor !important;
-    border-radius: 8px !important;
-    margin-right: 3rem;
-    margin-left: auto;
-    
+.btn {
+  border: 1px solid currentColor !important;
+  border-radius: 8px !important;
+  margin-right: 3rem;
+  margin-left: auto;
+}
+
+.statContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .label {
+    color: hsl(0, 0%, 71%);
+    font-size: 0.9rem;
+  }
+}
+
+.joinDate {
+  color: hsl(0, 0%, 71%);
+  font-size: 0.95rem;
+  margin-bottom: .75rem;
+}
+
+.followersPanel {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  justify-content: center;
+  letter-spacing: 1.5px;
+  margin-bottom: .75rem;
 }

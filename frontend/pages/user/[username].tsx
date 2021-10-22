@@ -39,7 +39,7 @@ const Profile: NextPage = (props) => {
     <Layout>
       {data?.data && <ProfileArea profile={data.data} />}
       {/* <div>{JSON.stringify(data?.data, null, 2)}</div> */}
-      <div className="tabs is-fullwidth mt-3">
+      <div className="tabs is-fullwidth mt-2">
         <ul>
           <li>
             <a onClick={() => setFeed("twits")}>Twits</a>

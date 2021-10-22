@@ -5,6 +5,8 @@ import Image from "next/image";
 import { useStore } from "../store/store";
 import { useMutation, useQueryClient } from "react-query";
 import { followUser, unfollowUser } from "../services/user";
+import UserStat from "./Layout/UserStat";
+import dateFormat from 'dateformat';
 
 interface Props {
   profile: IProfile;
@@ -39,6 +41,8 @@ const ProfileArea: React.FC<Props> = ({ profile }) => {
     });
   };
 
+  const formattedDate = dateFormat(new Date(profile.createdAt), 'mmm dd yyyy')
+
   return (
     <>
       <div className={stl.background}>
@@ -52,39 +56,36 @@ const ProfileArea: React.FC<Props> = ({ profile }) => {
           />
         </div>
       </div>
-      <div className={stl.flex}>
-        <span className={stl.username}>@{profile.username}</span>
-        <button className={`button is-outlined is-small ${stl.btn}`}>
-        <i className="bi bi-gear"></i>
-        </button>
+      <div style={{ margin: "0 1rem" }}>
+        <div className={stl.flex}>
+          <span className={stl.username}>@{profile.username}</span>
+          <button className={`button is-outlined is-small ${stl.btn}`}>
+            <i className="bi bi-gear"></i>
+          </button>
+        </div>
+        <div className={stl.joinDate}>
+        <i className="bi bi-calendar-event"></i> Joined tweeter on {formattedDate}
+        </div>
+
+        <div className={stl.followersPanel}>
+          <UserStat label={"Twits"}>{profile.twitAmount}</UserStat>
+          <UserStat label={"Followers"}>{profile.followedBy}</UserStat>
+          <UserStat label={"Following"}>{profile.following}</UserStat>
+        </div>
+        {!isLoggedUser && (
+          <button
+            onClick={followHandler}
+            className={`button ${
+              profile.isFollowing ? "is-danger" : "is-success"
+            } is-small`}
+          >
+            <span className="icon">
+              <i className="bi bi-heart-fill"></i>
+            </span>
+            <span>{profile.isFollowing ? "Unfollow" : "Follow"}</span>
+          </button>
+        )}
       </div>
-      <div className={stl.infoGrid}>
-        <span>
-          Followers: <b>{profile.followedBy}</b>
-        </span>
-        <span>
-          Following: <b>{profile.following}</b>
-        </span>
-        <span>
-          Twits: <b>{profile.twitAmount}</b>
-        </span>
-        <span>
-          Following: <b>{profile.following}</b>
-        </span>
-      </div>
-      {!isLoggedUser && (
-        <button
-          onClick={followHandler}
-          className={`button ${
-            profile.isFollowing ? "is-danger" : "is-success"
-          } is-small`}
-        >
-          <span className="icon">
-            <i className="bi bi-heart-fill"></i>
-          </span>
-          <span>{profile.isFollowing ? "Unfollow" : "Follow"}</span>
-        </button>
-      )}
     </>
   );
 };
