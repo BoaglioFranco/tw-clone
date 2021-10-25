@@ -6,7 +6,7 @@ import { useStore } from "../store/store";
 import { useMutation, useQueryClient } from "react-query";
 import { followUser, unfollowUser } from "../services/user";
 import UserStat from "./Layout/UserStat";
-import dateFormat from 'dateformat';
+import dateFormat from "dateformat";
 
 interface Props {
   profile: IProfile;
@@ -41,7 +41,7 @@ const ProfileArea: React.FC<Props> = ({ profile }) => {
     });
   };
 
-  const formattedDate = dateFormat(new Date(profile.createdAt), 'mmm dd yyyy')
+  const formattedDate = dateFormat(new Date(profile.createdAt), "mmm dd yyyy");
 
   return (
     <>
@@ -59,12 +59,15 @@ const ProfileArea: React.FC<Props> = ({ profile }) => {
       <div style={{ margin: "0 1rem" }}>
         <div className={stl.flex}>
           <span className={stl.username}>@{profile.username}</span>
-          <button className={`button is-outlined is-small ${stl.btn}`}>
-            <i className="bi bi-gear"></i>
-          </button>
+          {isLoggedUser && (
+            <button className={`button is-outlined is-small ${stl.btn}`}>
+              <i className="bi bi-gear"></i>
+            </button>
+          )}
         </div>
         <div className={stl.joinDate}>
-        <i className="bi bi-calendar-event"></i> Joined tweeter on {formattedDate}
+          <i className="bi bi-calendar-event"></i> Joined tweeter on{" "}
+          {formattedDate}
         </div>
 
         <div className={stl.followersPanel}>
