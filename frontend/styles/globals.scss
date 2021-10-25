@@ -30,3 +30,24 @@ body {
 a, a:visited{
   color: currentColor;
 }
+
+.backdrop {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: #000000e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card{
+  padding: .8rem;
+}
+
+.my-modal-card{
+  width: clamp(50%, 700px, 90%);
+}

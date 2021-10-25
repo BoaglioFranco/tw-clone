@@ -18,13 +18,28 @@
   border-radius: 9999px;
   margin-left: auto;
   position: fixed;
-  top: calc(100% - 95px);
-  left: 90%;
-  transform: translate(-50%, -50%);
+  top: calc(100% - 120px);
+  right: 1rem;
+  // transform: translate(-50%, -50%);
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .ch {
   font-size: 12px;
   color: rgb(122, 122, 122);
+  margin-top: .25rem;
+}
+
+.header{
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.close{
+  margin-left: auto;
+  border: none;
+  background-color: transparent;
+  font-size: 1.3rem;
+  color: hsl(0, 0%, 80%);
 }
