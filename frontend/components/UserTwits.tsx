@@ -8,14 +8,14 @@ interface Props {
 }
 
 const UserTwits: React.FC<Props> = ({ feedType, userId }) => {
-  console.log("userid", userId);
+
   const { data } = useQuery(["feed", userId, feedType], () =>
     feedType === "twits" ? getUserTwits(userId) : getUserLikes(userId)
   );
   return (
     <>
       {data?.data.map((t) => (
-        <Twit twit={t} key={t.id} />
+        <Twit twit={t} key={t.id} queryKey={["feed", userId, feedType]} />
       ))}
     </>
   );

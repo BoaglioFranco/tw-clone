@@ -7,16 +7,17 @@ import { useMutation, useQueryClient } from "react-query";
 import { likeTwit } from "../services/twits";
 interface Props {
   twit: ITwit;
+  queryKey?: any;
 }
 
-export const Twit: React.FC<Props> = ({ twit }) => {
+export const Twit: React.FC<Props> = ({ twit, queryKey = 'twits'}) => {
   const queryClient = useQueryClient();
   const likeMutation = useMutation((twitId: number) => likeTwit(twitId));
 
   const onLike = () => {
     likeMutation.mutate(twit.id, {
       onSuccess: () => {
-        queryClient.setQueryData("twits", (cache: any) => {
+        queryClient.setQueryData(queryKey, (cache: any) => {
           const tw = (cache.data as ITwit[]).find((t) => t.id === twit.id)!;
           tw.hasLiked = !tw.hasLiked;
           tw.likes = tw.hasLiked ? tw.likes + 1 : tw.likes - 1;

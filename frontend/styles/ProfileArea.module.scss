@@ -1,6 +1,7 @@
 .background {
   height: 80px;
-  background-color: lightcoral;
+  background: rgb(63,94,251);
+  background: linear-gradient(to right, rgb(9, 135, 160), rgb(128, 90, 213));
   overflow: visible;
   position: relative;
   // margin-bottom: 3rem;
@@ -61,7 +62,7 @@
 .joinDate {
   color: hsl(0, 0%, 71%);
   font-size: 0.95rem;
-  margin-bottom: .75rem;
+  margin-bottom: 0.75rem;
 }
 
 .followersPanel {
@@ -70,5 +71,5 @@
   gap: 2rem;
   justify-content: center;
   letter-spacing: 1.5px;
-  margin-bottom: .75rem;
+  margin-bottom: 0.75rem;
 }

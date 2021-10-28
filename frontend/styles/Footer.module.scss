@@ -1,0 +1,21 @@
+.footer{
+    display: flex;
+    height: 50px;
+    align-items: center;
+    padding: 0 .8rem;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 999px;
+    background-color: transparent;
+    width: 80%;
+    margin: auto;
+    margin-bottom: .5rem;
+    // margin-top: .5rem;
+    // border-top: 1px solid hsl(171, 100%, 41%);
+}
+
+
+.btn{
+    color: #00d1b2;
+    font-size: 25px;
+}
+
